@@ -17,19 +17,20 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
+      overflow-x: hidden;
       color: #4b3d33;
       padding: 20px;
     }
 
     .bg-glow {
-      position: absolute;
+      position: fixed;
       width: 420px;
       height: 420px;
       background: radial-gradient(circle, rgba(255,255,255,0.35), rgba(255,255,255,0));
       border-radius: 50%;
       filter: blur(10px);
       animation: floatGlow 6s ease-in-out infinite;
+      z-index: 0;
     }
 
     .bg-glow.one {
@@ -51,12 +52,12 @@
     .card {
       position: relative;
       z-index: 2;
-      background: rgba(255, 250, 244, 0.88);
+      background: rgba(255, 250, 244, 0.9);
       backdrop-filter: blur(6px);
-      border: 1px solid rgba(255,255,255,0.5);
+      border: 1px solid rgba(255,255,255,0.55);
       border-radius: 28px;
-      padding: 42px 30px 34px;
-      max-width: 470px;
+      padding: 42px 24px 34px;
+      max-width: 560px;
       width: 100%;
       text-align: center;
       box-shadow: 0 14px 40px rgba(95, 72, 53, 0.18);
@@ -114,7 +115,7 @@
 
     .message-wrap {
       position: relative;
-      height: 110px;
+      min-height: 110px;
       margin-top: 16px;
       overflow: visible;
     }
@@ -199,9 +200,43 @@
       }
     }
 
+    .gallery {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      opacity: 0;
+      transform: translateY(20px);
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.9s ease;
+    }
+
+    .gallery.show {
+      opacity: 1;
+      transform: translateY(0);
+      max-height: 2000px;
+    }
+
+    .gallery img {
+      width: 100%;
+      display: block;
+      border-radius: 18px;
+      box-shadow: 0 10px 24px rgba(95, 72, 53, 0.18);
+      object-fit: cover;
+      aspect-ratio: 1 / 1.15;
+      background: #eadfce;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.02);
+      box-shadow: 0 14px 30px rgba(95, 72, 53, 0.22);
+    }
+
     @media (max-width: 480px) {
       .card {
-        padding: 34px 22px 28px;
+        padding: 34px 18px 28px;
       }
 
       h1 {
@@ -214,6 +249,10 @@
 
       .love-message {
         font-size: 28px;
+      }
+
+      .gallery {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -247,13 +286,25 @@
       <div class="love-message" id="loveMsg">사랑해, 밍서야 ❤️</div>
       <div class="sub-message" id="subMsg">앞으로도 우리 오래오래 행복하자</div>
     </div>
+
+    <div class="gallery" id="gallery">
+      <img src="1774749226036.jpg" alt="우리의 추억 1">
+      <img src="1774749227204.jpg" alt="우리의 추억 2">
+      <img src="1773542665390.jpg" alt="우리의 추억 3">
+      <img src="1772891751193.jpg" alt="우리의 추억 4">
+      <img src="AirBrush_20260307230939.jpg" alt="우리의 추억 5">
+      <img src="1772884267962.jpg" alt="우리의 추억 6">
+    </div>
   </div>
 
   <script>
+    let opened = false;
+
     function showLove() {
       const loveMsg = document.getElementById('loveMsg');
       const subMsg = document.getElementById('subMsg');
       const effectArea = document.getElementById('effectArea');
+      const gallery = document.getElementById('gallery');
 
       loveMsg.classList.remove('show');
       subMsg.classList.remove('show');
@@ -262,34 +313,43 @@
 
       loveMsg.classList.add('show');
       subMsg.classList.add('show');
+      gallery.classList.add('show');
 
-      for (let i = 0; i < 14; i++) {
-        const heart = document.createElement('div');
-        heart.className = 'floating-heart';
-        heart.innerText = ['❤️', '🤍', '✨', '💕'][Math.floor(Math.random() * 4)];
-        heart.style.left = Math.random() * 90 + '%';
-        heart.style.top = '65px';
-        heart.style.animationDelay = (Math.random() * 0.5) + 's';
-        heart.style.fontSize = (18 + Math.random() * 12) + 'px';
-        effectArea.appendChild(heart);
+      if (!opened) {
+        for (let i = 0; i < 14; i++) {
+          const heart = document.createElement('div');
+          heart.className = 'floating-heart';
+          heart.innerText = ['❤️', '🤍', '✨', '💕'][Math.floor(Math.random() * 4)];
+          heart.style.left = Math.random() * 90 + '%';
+          heart.style.top = '65px';
+          heart.style.animationDelay = (Math.random() * 0.5) + 's';
+          heart.style.fontSize = (18 + Math.random() * 12) + 'px';
+          effectArea.appendChild(heart);
 
-        setTimeout(() => {
-          heart.remove();
-        }, 2600);
+          setTimeout(() => {
+            heart.remove();
+          }, 2600);
+        }
+
+        for (let i = 0; i < 18; i++) {
+          const sparkle = document.createElement('div');
+          sparkle.className = 'sparkle';
+          sparkle.style.left = Math.random() * 100 + '%';
+          sparkle.style.top = (20 + Math.random() * 70) + 'px';
+          sparkle.style.animationDelay = (Math.random() * 0.4) + 's';
+          effectArea.appendChild(sparkle);
+
+          setTimeout(() => {
+            sparkle.remove();
+          }, 1800);
+        }
+
+        opened = true;
       }
 
-      for (let i = 0; i < 18; i++) {
-        const sparkle = document.createElement('div');
-        sparkle.className = 'sparkle';
-        sparkle.style.left = Math.random() * 100 + '%';
-        sparkle.style.top = (20 + Math.random() * 70) + 'px';
-        sparkle.style.animationDelay = (Math.random() * 0.4) + 's';
-        effectArea.appendChild(sparkle);
-
-        setTimeout(() => {
-          sparkle.remove();
-        }, 1800);
-      }
+      setTimeout(() => {
+        gallery.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 350);
     }
   </script>
 </body>
