@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>To. 너에게</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #ffe6eb, #fff6f8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #333;
+    }
+    .card {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+      max-width: 420px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      color: #ff5c8a;
+    }
+    p {
+      font-size: 17px;
+      line-height: 1.7;
+      white-space: pre-line;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 999px;
+      background: #ff5c8a;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+    .hidden {
+      display: none;
+      margin-top: 20px;
+      font-weight: bold;
+      color: #ff3366;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>To. 사랑하는 ○○에게</h1>
+    <p>
+항상 내 옆에 있어줘서 고마워.
+너랑 함께하는 시간이
+내 하루 중 가장 행복한 순간이야.
+
+많이 아끼고,
+많이 고맙고,
+진심으로 사랑해.
+    </p>
+
+    <button onclick="showMessage()">눌러봐</button>
+    <div id="msg" class="hidden">❤️ 사랑해 ❤️</div>
+  </div>
+
+  <script>
+    function showMessage() {
+      document.getElementById('msg').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
