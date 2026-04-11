@@ -17,19 +17,21 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
+      overflow-x: hidden;
       color: #4b3d33;
       padding: 20px;
     }
 
     .bg-glow {
-      position: absolute;
+      position: fixed;
       width: 420px;
       height: 420px;
       background: radial-gradient(circle, rgba(255,255,255,0.35), rgba(255,255,255,0));
       border-radius: 50%;
       filter: blur(10px);
       animation: floatGlow 6s ease-in-out infinite;
+      z-index: 0;
+      pointer-events: none;
     }
 
     .bg-glow.one {
@@ -44,19 +46,23 @@
     }
 
     @keyframes floatGlow {
-      0%, 100% { transform: translateY(0px) scale(1); }
-      50% { transform: translateY(-15px) scale(1.05); }
+      0%, 100% {
+        transform: translateY(0px) scale(1);
+      }
+      50% {
+        transform: translateY(-15px) scale(1.05);
+      }
     }
 
     .card {
       position: relative;
       z-index: 2;
-      background: rgba(255, 250, 244, 0.88);
+      background: rgba(255, 250, 244, 0.9);
       backdrop-filter: blur(6px);
-      border: 1px solid rgba(255,255,255,0.5);
+      border: 1px solid rgba(255,255,255,0.55);
       border-radius: 28px;
-      padding: 42px 30px 34px;
-      max-width: 470px;
+      padding: 42px 24px 34px;
+      max-width: 560px;
       width: 100%;
       text-align: center;
       box-shadow: 0 14px 40px rgba(95, 72, 53, 0.18);
@@ -114,7 +120,7 @@
 
     .message-wrap {
       position: relative;
-      height: 110px;
+      min-height: 110px;
       margin-top: 16px;
       overflow: visible;
     }
@@ -199,9 +205,38 @@
       }
     }
 
+    .gallery {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      opacity: 0;
+      transform: translateY(20px);
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.9s ease;
+    }
+
+    .gallery.show {
+      opacity: 1;
+      transform: translateY(0);
+      max-height: 2000px;
+    }
+
+    .gallery img {
+      width: 100%;
+      max-width: 360px;
+      margin: 0 auto;
+      display: block;
+      border-radius: 18px;
+      box-shadow: 0 10px 24px rgba(95, 72, 53, 0.18);
+      object-fit: cover;
+      background: #eadfce;
+    }
+
     @media (max-width: 480px) {
       .card {
-        padding: 34px 22px 28px;
+        padding: 34px 18px 28px;
       }
 
       h1 {
@@ -240,20 +275,27 @@
     <div class="heart-line">🤍 🤎 🤍</div>
 
     <button class="magic-btn" onclick="showLove()">
-      열어봐
+      우리의 1년 열어보기
     </button>
 
     <div class="message-wrap" id="effectArea">
       <div class="love-message" id="loveMsg">사랑해, 밍서야 ❤️</div>
       <div class="sub-message" id="subMsg">앞으로도 우리 오래오래 행복하자</div>
     </div>
+
+    <div class="gallery" id="gallery">
+      <img src="1775393093591.jpg" alt="우리의 추억">
+    </div>
   </div>
 
   <script>
+    let opened = false;
+
     function showLove() {
       const loveMsg = document.getElementById('loveMsg');
       const subMsg = document.getElementById('subMsg');
       const effectArea = document.getElementById('effectArea');
+      const gallery = document.getElementById('gallery');
 
       loveMsg.classList.remove('show');
       subMsg.classList.remove('show');
@@ -262,6 +304,7 @@
 
       loveMsg.classList.add('show');
       subMsg.classList.add('show');
+      gallery.classList.add('show');
 
       for (let i = 0; i < 14; i++) {
         const heart = document.createElement('div');
@@ -290,6 +333,14 @@
           sparkle.remove();
         }, 1800);
       }
+
+      if (!opened) {
+        opened = true;
+      }
+
+      setTimeout(() => {
+        gallery.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 350);
     }
   </script>
 </body>
